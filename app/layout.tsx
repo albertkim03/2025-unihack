@@ -11,7 +11,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "STEM Test Generator",
   description: "AI-powered test paper generator for STEM subjects",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -58,6 +57,3 @@ export default function RootLayout({
   )
 }
 
-
-
-import './globals.css'

@@ -10,7 +10,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Plus, Settings, Users, FileText, BarChart3, Mail, UserPlus, Share } from "lucide-react"
 import { ClassroomMembers } from "@/components/classroom-members"
 import { ClassroomTests } from "@/components/classroom-tests"
-import { ClassroomResults } from "@/components/classroom-results"
 import { ClassroomSettings } from "@/components/classroom-settings"
 
 export default function ClassroomPage({ params }: { params: { id: string } }) {
@@ -100,7 +99,7 @@ export default function ClassroomPage({ params }: { params: { id: string } }) {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-        <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full">
+        <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="members">
             <Users className="mr-2 h-4 w-4 hidden sm:inline" />
@@ -109,10 +108,6 @@ export default function ClassroomPage({ params }: { params: { id: string } }) {
           <TabsTrigger value="tests">
             <FileText className="mr-2 h-4 w-4 hidden sm:inline" />
             Tests
-          </TabsTrigger>
-          <TabsTrigger value="results">
-            <BarChart3 className="mr-2 h-4 w-4 hidden sm:inline" />
-            Results
           </TabsTrigger>
           <TabsTrigger value="settings">
             <Settings className="mr-2 h-4 w-4 hidden sm:inline" />
@@ -289,10 +284,6 @@ export default function ClassroomPage({ params }: { params: { id: string } }) {
 
         <TabsContent value="tests">
           <ClassroomTests classroomId={params.id} />
-        </TabsContent>
-
-        <TabsContent value="results">
-          <ClassroomResults classroomId={params.id} />
         </TabsContent>
 
         <TabsContent value="settings">
