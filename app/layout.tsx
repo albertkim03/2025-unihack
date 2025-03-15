@@ -4,7 +4,8 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { MainNav } from "@/components/main-nav"
-import { UserNav } from "@/components/user-nav"
+import { UserNavClient } from "@/components/user-nav-client"
+import UserNavServer from "@/components/user-nav-server";
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -27,7 +28,7 @@ export default function RootLayout({
               <div className="container flex h-16 items-center px-4">
                 <MainNav />
                 <div className="ml-auto flex items-center space-x-4">
-                  <UserNav />
+                  <UserNavServer />
                 </div>
               </div>
             </header>

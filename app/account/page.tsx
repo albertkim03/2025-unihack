@@ -6,8 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AccountStats } from "@/components/account-stats"
+import {getUser} from "@/lib/lucia";
 
 export default function AccountPage() {
+  const user = getUser()
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -49,7 +51,7 @@ export default function AccountPage() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="first-name">First Name</Label>
-                    <Input id="first-name" defaultValue="John" />
+                    <Input id="first-name" defaultValue="user" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="last-name">Last Name</Label>
