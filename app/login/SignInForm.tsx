@@ -97,7 +97,7 @@ const SignInForm = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type='submit' className='self-start'>
+                        <Button type='submit' className='self-start mt-2'>
                             Login
                         </Button>
                     </form>
