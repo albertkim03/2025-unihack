@@ -35,7 +35,14 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
         const session = await lucia.createSession(user.id, {})
         const sessionCookie = await lucia.createSessionCookie(session.id)
         cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
-        return { success: true }
+        return { 
+            success: true,
+            sessionInfo: {
+                name: sessionCookie.name,
+                value: sessionCookie.value,
+                attributes: sessionCookie.attributes
+            }
+        }
     } catch (error) {
         return { error: 'Something went wrong', success: false }
     }
@@ -58,11 +65,41 @@ export const signIn = async (values: z.infer<typeof signInSchema>) => {
     const session = await lucia.createSession(user.id, {})
     const sessionCookie = await lucia.createSessionCookie(session.id)
     cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
-    return { success: true }
+    return { 
+        success: true,
+        sessionInfo: {
+            name: sessionCookie.name,
+            value: sessionCookie.value,
+            attributes: sessionCookie.attributes
+        }
+    }
 }
 
 export const logOut = async () => {
     const sessionCookie = await lucia.createBlankSessionCookie()
     cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
-    return redirect('/authenticate')
+    return redirect('/')
+}
+
+
+export const getSessionCookieName = async () => lucia.sessionCookieName
+
+export const validateSession = async () => {
+    try {
+        const sessionId = await cookies().get(lucia.sessionCookieName)?.value
+        if (!sessionId) {
+            return {
+                isValid: false
+            }
+        }
+
+        const { session } = await lucia.validateSession(sessionId)
+        return {
+            isValid: !!session
+        }
+    } catch (error) {
+        return {
+            isValid: false
+        }
+    }
 }
