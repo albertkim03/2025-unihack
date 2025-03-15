@@ -59,7 +59,7 @@ const SignUpForm = () => {
     }
 
     return (
-        <Card className='min-w-[500px]'>
+        <Card>
             <CardHeader>
                 <CardTitle>Begin your journey...</CardTitle>
                 <CardDescription>
@@ -160,7 +160,7 @@ const SignUpForm = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type='submit' className='self-start'>
+                        <Button type='submit' className='self-start mt-2'>
                             Sign Up
                         </Button>
                     </form>

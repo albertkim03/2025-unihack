@@ -25,9 +25,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
             <header className="border-b">
-              <div className="container flex h-16 items-center px-4">
+              <div className="w-full flex h-16 items-center px-4">
                 <MainNav />
-                <div className="ml-auto flex items-center space-x-4">
+                <div className="ml-auto flex items-center space-x-4 px-8">
                   <UserNavServer />
                 </div>
               </div>

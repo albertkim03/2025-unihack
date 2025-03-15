@@ -41,7 +41,7 @@ export function MainNav() {
   ]
 
   return (
-    <nav className="flex items-center space-x-4 lg:space-x-6">
+    <nav className="flex items-center space-x-4 lg:space-x-10 px-8">
       {routes.map((route) => (
         <Link
           key={route.href}
