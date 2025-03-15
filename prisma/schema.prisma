@@ -9,27 +9,141 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url               = env("DATABASE_URL")
-  directUrl         = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
+//
+// ENUMS
+//
+enum QuestionType {
+  TRUE_FALSE
+  MULTIPLE_CHOICE
+  SHORT_ANSWER
+  ESSAY
+}
+
+//
+// MODELS
+//
 model User {
   id             String  @id @default(cuid())
   email          String  @unique
-  firstName           String
-  lastName           String
+  firstName      String
+  lastName       String
   role           String?
   hashedPassword String?
   picture        String?
 
+  // One-to-many: A user can have multiple sessions
   session Session[]
+
+  // Many-to-many: A user can belong to multiple classrooms
+  classrooms Classroom[] @relation("ClassroomMembers")
+
+  // One-to-many: A user can own multiple classrooms
+  ownedClassrooms Classroom[] @relation("ClassroomOwner")
+
+  // One-to-many: A user can have multiple papers (copies of tests)
+  papers Paper[]
 }
 
 model Session {
-  id        String   @id
+  // Updated to use cuid() for consistency
+  id        String   @id @default(cuid())
   userId    String
   expiresAt DateTime
 
+  // Many sessions belong to one user
   user User @relation(fields: [userId], references: [id])
+}
+
+model Classroom {
+  id   String @id @default(cuid())
+  name String
+
+  // One-to-many: A classroom has exactly one owner (User)
+  ownerId String
+  owner   User   @relation("ClassroomOwner", fields: [ownerId], references: [id])
+
+  // Many-to-many: A classroom can have multiple members (Users)
+  members User[] @relation("ClassroomMembers")
+
+  // One-to-many: A classroom can have multiple tests
+  tests Test[]
+}
+
+model Test {
+  id    String @id @default(cuid())
+  title String
+
+  // A test can belong to a classroom (optional)
+  classroomId String?
+  classroom   Classroom? @relation(fields: [classroomId], references: [id])
+
+  // One-to-many: A test can have multiple questions
+  questions Question[]
+
+  // One-to-many: A test can be used to generate multiple papers for different users
+  papers Paper[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  questionText  String
+  questionType  QuestionType
+  correctAnswer String? // For MCQ/True-False
+  answerOptions String?
+  marks         Int
+
+  // Many questions belong to one test
+  testId String
+  test   Test     @relation(fields: [testId], references: [id])
+  answer Answer[]
+}
+
+model Paper {
+  id String @id @default(cuid())
+
+  // A paper is a user-specific instance of a test
+  testId String
+  test   Test   @relation(fields: [testId], references: [id])
+
+  // The user who owns/was assigned this paper
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  // One-to-many: A paper can have multiple answers
+  answers Answer[]
+
+  // Optionally store an overall result or score
+  result Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Answer {
+  id String @id @default(cuid())
+
+  // Each answer is tied to exactly one paper
+  paperId String
+  paper   Paper  @relation(fields: [paperId], references: [id])
+
+  // Each answer is for exactly one question
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+
+  // The user’s response
+  userAnswer String
+
+  // Marks awarded for this particular answer
+  marksObtained Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
