@@ -23,7 +23,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
 
   return (
-      <div className="container flex h-screen items-center justify-center">
+      <div className="flex min-h-[calc(100vh-8rem)] min-w-screen items-center justify-center bg-background p-4">
         <Card className="w-full max-w-md">
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
