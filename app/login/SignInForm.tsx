@@ -40,6 +40,7 @@ const SignInForm = () => {
         const res = await signIn(values)
         if (res.success) {
             toast.success('Login successful')
+            window.dispatchEvent(new Event('auth-change'))
             router.push('/dashboard')
         } else {
             toast.error(res.error)
