@@ -21,7 +21,8 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 export const signUpSchema = z.object({
-    name: z.string().min(5),
+    firstname: z.string().min(2, "First name is required"),
+    lastname: z.string().min(2, "Last name is required"),
     email: z.string().email(),
     password: z.string().min(8),
     confirmPassword: z.string().min(8),
@@ -35,10 +36,11 @@ const SignUpForm = () => {
     const form = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
-            confirmPassword: '',
-            name: '',
+            firstname: '',
+            lastname: '',
             email: '',
-            password: ''
+            password: '',
+            confirmPassword: ''
         },
     })
 
@@ -55,6 +57,7 @@ const SignUpForm = () => {
         // ✅ This will be type-safe and validated.
         console.log(values)
     }
+
     return (
         <Card className='min-w-[500px]'>
             <CardHeader>
@@ -85,13 +88,29 @@ const SignUpForm = () => {
                         />
                         <FormField
                             control={form.control}
-                            name='name'
+                            name='firstname'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>First Name</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder='Enter your name...'
+                                            placeholder='Enter your first name...'
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name='lastname'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Last Name</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder='Enter your last name...'
                                             {...field}
                                         />
                                     </FormControl>
